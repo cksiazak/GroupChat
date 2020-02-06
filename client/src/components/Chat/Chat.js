@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import './chat.css';
 
 const Chat = ({ location }) => {
-  const [chatData, setChatData] = useState({
+  const [uriData, setUriData] = useState({
     name: '',
     room: ''
   });
@@ -13,16 +13,22 @@ const Chat = ({ location }) => {
 
   useEffect(() => {
     // retrieve data from query
-    const data = queryString.parse(location.search);
-    // spread onto useState
-    setChatData({
-      ...data
-    });
-
+    const { name, room } = queryString.parse(location.search);
     // initialize socket
     let socket = io(ENDPOINT);
-    socket.emit('join', { ...chatData });
 
+    // spread onto useState
+    setUriData({ room, name });
+
+    // emit data pulled from queryString
+    socket.emit('join', { name, room }, () => {});
+
+    return () => {
+      // cleanup function, emitting disconnect event
+      socket.emit('disconnect');
+      // turn off this instance
+      socket.off();
+    };
   }, [ENDPOINT, location.search]);
 
   return <div>CHAT</div>;

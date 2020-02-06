@@ -11,6 +11,11 @@ const io = socketio(server);
 io.on('connection', socket => {
   console.log('We have a new connection');
 
+  // socket on join, emitted from client
+  socket.on('join', (data, cb) => {
+    console.log(data);
+  });
+
   // socket message on disconnect
   socket.on('disconnect', () => {
     console.log('User has left');
