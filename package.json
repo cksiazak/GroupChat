@@ -1,0 +1,11 @@
+{
+  "name": "GroupChat",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:cksiazak/GroupChat.git",
+  "author": "Christopher Ksiazak <cksiazak@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^5.1.0"
+  }
+}
