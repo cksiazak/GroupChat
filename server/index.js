@@ -8,12 +8,18 @@ const server = http.createServer(app);
 const io = socketio(server);
 
 // init websocket
+// check for connection ON websocket
 io.on('connection', socket => {
+  // init with console message
   console.log('We have a new connection');
 
   // socket on join, emitted from client
+  // client sends a 'join' param
   socket.on('join', (data, cb) => {
+    // data is what we are receiving
     console.log(data);
+
+    // cb is what we can emit back once certain conditions are met
   });
 
   // socket message on disconnect
