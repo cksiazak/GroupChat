@@ -8,8 +8,8 @@ const users = [];
 const addUser = ({ id, name, room }) => {
   // we'll remove whitespace and lowercase
   // so case won't matter when joining
-  name = name.trim().lowercase();
-  room = name.trim().lowercase();
+  name = name.trim().toLowerCase();
+  room = name.trim().toLowerCase();
 
   // check if there is an existing user in a room
   // so there is no two users in the same room
@@ -44,7 +44,11 @@ const removeUser = id => {
 
 // We'll check the array if there is an active user with that id,
 // and return it if true
-const getUser = id => users.find(user => user.id === id);
+const getUser = id => {
+  console.log(users);
+  console.log('this is id', id);
+  return users.find(user => id === user.id);
+};
 
 // Get's all users in a room by filtering the array for that room
 const getUsersInRoom = room => user.filter(user => user.room === room);

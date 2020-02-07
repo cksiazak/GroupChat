@@ -6,8 +6,11 @@ const { addUser, removeUser, getUser, getUsersInRoom } = require('./users.js');
 
 // init server
 const app = express();
-const server = http.createServer(app);
+const server = http.Server(app);
 const io = socketio(server);
+
+// route
+app.use('/', require('./router'));
 
 // init websocket
 // check for connection ON websocket
@@ -29,6 +32,10 @@ io.on('connection', socket => {
       return cb(error);
     }
 
+    // if there isn't an error
+    // call socket method join to join a user in a room
+    socket.join(user.room);
+
     // system message directly to someone when they join a room
     // sending a payload with the user 'admin' and a message
     socket.emit('message', {
@@ -41,10 +48,6 @@ io.on('connection', socket => {
       .to(user.room)
       .emit('message', { user: 'admin', text: `${user.name} has joined` });
 
-    // if there isn't an error
-    // call socket method join to join a user in a room
-    socket.join(user.room);
-
     // add this so the callback in the front end gets called every time
     cb();
   });
@@ -55,10 +58,11 @@ io.on('connection', socket => {
     // we need to get the user that sent the message
     // by passing in the socket.id (which is their uid)
     const user = getUser(socket.id);
+    console.log('this is in send message', user);
 
     // target a room, by passing in our user's room
     // and emitting a message to that room
-    io.to(user.room).emit('message', { user: user.name, text: message });
+    // io.to(user.room).emit('message', { user: user.name, text: message });
 
     // call cb so we can do something afterwards
     cb();
@@ -69,9 +73,6 @@ io.on('connection', socket => {
     console.log('User has left');
   });
 });
-
-// route
-app.use('/', require('./router'));
 
 // port for server
 const PORT = process.env.PORT || 5000;
