@@ -58,11 +58,10 @@ io.on('connection', socket => {
     // we need to get the user that sent the message
     // by passing in the socket.id (which is their uid)
     const user = getUser(socket.id);
-    console.log('this is in send message', user);
 
     // target a room, by passing in our user's room
     // and emitting a message to that room
-    // io.to(user.room).emit('message', { user: user.name, text: message });
+    io.to(user.room).emit('message', { user: user.name, text: message });
 
     // call cb so we can do something afterwards
     cb();
@@ -70,7 +69,18 @@ io.on('connection', socket => {
 
   // socket message on disconnect
   socket.on('disconnect', () => {
-    console.log('User has left');
+    // once user disconnects, pass socket.id into removeUser helper
+    // to remove user from array
+    const user = removeUser(socket.id);
+
+    // if that returns true
+    if (user) {
+      // emit message to room
+      io.to(user.room).emit('message', {
+        user: 'admin',
+        text: `${user.name} has left`
+      });
+    }
   });
 });
 

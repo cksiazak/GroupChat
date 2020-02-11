@@ -3,6 +3,8 @@ import queryString from 'query-string';
 import io from 'socket.io-client';
 
 import InfoBar from '../InfoBar/Infobar';
+import Input from '../Input/Input';
+import Messages from '../Messages/Messages';
 
 import './chat.css';
 
@@ -69,11 +71,12 @@ const Chat = ({ location }) => {
     <div className='outerContainer'>
       <div className='container'>
         <InfoBar room={uriData.room} />
-        {/* <input
-          value={message}
-          onChange={e => setMessage(e.target.value)}
-          onKeyPress={e => (e.key === 'Enter' ? sendMessage(e) : null)}
-        /> */}
+        <Messages messages={messages} name={uriData.name} />
+        <Input
+          message={message}
+          setMessage={setMessage}
+          sendMessage={sendMessage}
+        />
       </div>
     </div>
   );

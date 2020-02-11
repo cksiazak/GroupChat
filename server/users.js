@@ -45,8 +45,6 @@ const removeUser = id => {
 // We'll check the array if there is an active user with that id,
 // and return it if true
 const getUser = id => {
-  console.log(users);
-  console.log('this is id', id);
   return users.find(user => id === user.id);
 };
 
