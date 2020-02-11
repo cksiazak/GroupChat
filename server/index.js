@@ -24,7 +24,6 @@ io.on('connection', socket => {
     // passing in the instance of the socket as the id
     // and spreading in the data object we receive
     const { user, error } = addUser({ id: socket.id, ...data });
-
     // if there is an error,
     // return the callback with the error
     // this will emit to the front end
@@ -48,6 +47,12 @@ io.on('connection', socket => {
       .to(user.room)
       .emit('message', { user: 'admin', text: `${user.name} has joined` });
 
+    // see what users are in room
+    io.to(user.room).emit('roomData', {
+      room: user.room,
+      users: getUsersInRoom(user.room)
+    });
+
     // add this so the callback in the front end gets called every time
     cb();
   });
@@ -62,6 +67,10 @@ io.on('connection', socket => {
     // target a room, by passing in our user's room
     // and emitting a message to that room
     io.to(user.room).emit('message', { user: user.name, text: message });
+    io.to(user.room).emit('roomData', {
+      room: user.room,
+      users: getUsersInRoom(user.room)
+    });
 
     // call cb so we can do something afterwards
     cb();

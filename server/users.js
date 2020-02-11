@@ -9,7 +9,7 @@ const addUser = ({ id, name, room }) => {
   // we'll remove whitespace and lowercase
   // so case won't matter when joining
   name = name.trim().toLowerCase();
-  room = name.trim().toLowerCase();
+  room = room.trim().toLowerCase();
 
   // check if there is an existing user in a room
   // so there is no two users in the same room
@@ -49,6 +49,6 @@ const getUser = id => {
 };
 
 // Get's all users in a room by filtering the array for that room
-const getUsersInRoom = room => user.filter(user => user.room === room);
+const getUsersInRoom = room => users.filter(user => user.room === room);
 
 module.exports = { addUser, removeUser, getUser, getUsersInRoom };
